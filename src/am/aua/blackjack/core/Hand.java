@@ -45,5 +45,6 @@ public abstract class Hand {
     }
 
     public static void main(String[] args) {
+
     }
 }
