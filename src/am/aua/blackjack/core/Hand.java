@@ -7,9 +7,14 @@ public abstract class Hand {
     public Hand(){
         hand =new Card[0];
         Card randomCard1 = new Card();
-        Deck.addToUsedCards(randomCard1);
+
         Card randomCard2 = new Card();
-        Deck.addToUsedCards(randomCard2);
+        try{ //TODo inchna sxal vor anyndhat qcuma exception?
+            BlackJack.addToUsedCards(randomCard1);
+            BlackJack.addToUsedCards(randomCard2);
+        } catch (NoCardsLeftException e) {
+            System.out.println(e);
+        }
         hand = Card.appendCardsToArray(hand,randomCard1 ,randomCard2 );
 
         valueOfHand = randomCard1.getIntValue()+randomCard2.getIntValue();
@@ -17,13 +22,9 @@ public abstract class Hand {
 
     public Card[] getHand(){
         Card[] copy = new Card[hand.length];
-        for (int i = 0; i < hand.length; i++) {
-            if (this.hand[i] == null) {
-                hand[i] = null;
-            } else {
-                hand[i] = (Card) this.hand[i].clone();
-            }
-        }
+        for (int i = 0; i < hand.length; i++)
+                if (this.hand[i] != null)
+                    copy[i] = (Card) this.hand[i].clone();
         return copy;
     }
 

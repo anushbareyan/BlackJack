@@ -1,5 +1,6 @@
 package am.aua.blackjack.core;
-
+//TODO inner clas????
+//TODO Blackjackum klor tverov en bet dnum. stegh vonc dnem ?
 public class Bank {//TODO petka voobshe Bank arandzin??
     private double balance;//TODO money n normala double?
     private double bettedMoney;//TODO petqa??
@@ -29,6 +30,6 @@ public class Bank {//TODO petka voobshe Bank arandzin??
     }
     @Override
     public String toString() {
-        return "Bank: "+ balance;
+        return "Bank: "+ balance+"$"+"\nBetted money:"+bettedMoney+"$";
     }
 }

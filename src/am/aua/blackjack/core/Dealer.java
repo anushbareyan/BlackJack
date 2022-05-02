@@ -6,8 +6,8 @@ public class Dealer extends Hand{
     }
     public String toString(){
         String str="";
-        str = str + "HIDDEN ";
-        Card[] dealHand =this.getHand();
+        str += "HIDDEN\n";
+        Card[] dealHand = getHand();
         for(int i=1;i<dealHand.length;i++){
             str=str+dealHand[i]+ " "+ dealHand[i].getIntValue()+"\n";
         }
@@ -18,9 +18,4 @@ public class Dealer extends Hand{
         Dealer d = new Dealer();
         System.out.println(d);
     }
-
-
-
-
-
 }
