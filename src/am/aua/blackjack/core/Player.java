@@ -27,10 +27,21 @@ public class Player extends Participant implements Comparable<Player>{
 
     @Override
     public int compareTo(Player o) { //comparing only their banks to see who is the leader
-        if(this.bank.getBalance()!=o.bank.getBalance()){
-            return this.bank.getBalance()-o.bank.getBalance();
+
+        if(bank.getMoneyDollars()> o.bank.getMoneyDollars() && bank.getMoneyCents()>o.bank.getMoneyCents()){
+            return (int) (bank.getMoneyDollars()- o.bank.getMoneyDollars());
+        }
+        if(bank.getMoneyCents()<o.bank.getMoneyCents() || bank.getMoneyDollars()<o.bank.getMoneyDollars()){
+            return (int) (o.bank.getMoneyDollars()-bank.getMoneyDollars());
+        }
+        if(bank.getMoneyDollars()!= o.bank.getMoneyDollars()){
+            return (int) (bank.getMoneyDollars()- o.bank.getMoneyDollars());
         }else{
-            return 0;
+            if( bank.getMoneyCents()!=o.bank.getMoneyCents()){
+                return (bank.getMoneyCents()-o.bank.getMoneyCents())/100;
+            }else{
+                return 0;
+            }
         }
     }
 
