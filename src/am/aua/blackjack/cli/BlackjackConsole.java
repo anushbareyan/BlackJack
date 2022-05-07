@@ -1,11 +1,11 @@
 package am.aua.blackjack.cli;
 
-import am.aua.blackjack.core.BlackJack;
+import am.aua.blackjack.core.Blackjack;
 
 import java.util.Scanner;
 
 public class BlackjackConsole {
-    private BlackJack game;
+    private Blackjack game;
 
     public void run(){
         Scanner sc = new Scanner(System.in);
@@ -17,7 +17,7 @@ public class BlackjackConsole {
 
         while(!inputLine.equals("q")){
             if (inputLine.equals("p")) {
-                game = new BlackJack();
+                game = new Blackjack();
                 play();
             }
         }

@@ -1,51 +1,65 @@
 package am.aua.blackjack.core;
 
-public abstract class Hand {
-    private Card[] hand;
-    private int valueOfHand;
+public class Hand {
+    private Card[] cardsInHand;
+    private int valueOfCardsInHand;
+
 
     public Hand(){
-        hand =new Card[0];
-        Card randomCard1 = new Card();
+        cardsInHand[0]=new Card();
+        cardsInHand[1]=new Card();
+        valueOfCardsInHand = cardsInHand[0].getIntValue()+cardsInHand[1].getIntValue();
 
-        Card randomCard2 = new Card();
-        try{ //TODo inchna sxal vor anyndhat qcuma exception?
-            BlackJack.addToUsedCards(randomCard1);
-            BlackJack.addToUsedCards(randomCard2);
-        } catch (NoCardsLeftException e) {
-            System.out.println(e);
-        }
-        hand = Card.appendCardsToArray(hand,randomCard1 ,randomCard2 );
-
-        valueOfHand = randomCard1.getIntValue()+randomCard2.getIntValue();
     }
 
-    public Card[] getHand(){
-        Card[] copy = new Card[hand.length];
-        for (int i = 0; i < hand.length; i++)
-                if (this.hand[i] != null)
-                    copy[i] = (Card) this.hand[i].clone();
+    public Hand(Card[] cardsInHand, int valueOfCardsInHand){
+        setCardsInHand(cardsInHand);
+        this.valueOfCardsInHand =valueOfCardsInHand;
+    }
+    public Hand(Card[] cardsInHand){
+        setCardsInHand(cardsInHand);
+        for(int i =0;i< cardsInHand.length;i++) {
+            valueOfCardsInHand += cardsInHand[i].getIntValue();
+        }
+    }
+
+    public Card[] getCardsInHand(){
+        Card[] copy = new Card[cardsInHand.length];
+        for (int i = 0; i < cardsInHand.length; i++)
+            if (this.cardsInHand[i] != null)
+                copy[i] = (Card) this.cardsInHand[i].clone();
         return copy;
     }
 
-    public void hit(){
-        hand= Card.appendCardsToArray(hand, Card.getRandomCard());
+    public int getValueOfCardsInHand(){
+        return valueOfCardsInHand;
+    }
+
+    public void setCardsInHand(Card[] cardsInHand){
+        for (int i = 0; i < cardsInHand.length; i++) {
+            if (cardsInHand[i] != null) {
+                this.cardsInHand[i]= cardsInHand[i].clone();
+            }
+        }
+    }
+
+    public void addCardsToCardsInHand(Card...newCards){
+
+        cardsInHand = Card.appendCardsToArray(cardsInHand, newCards);
+        for(int i =0;i< newCards.length;i++){
+            valueOfCardsInHand += newCards[i].getIntValue();
+        }
+
     }
 
     @Override
     public String toString(){
         String str="";
-        for(Card c: hand){
-            str=str+c+ " "+ c.getIntValue()+"\n";
+        for(Card c: cardsInHand){
+            str=str+c+ " with the value of"+ c.getIntValue()+"\n";
         }
         return str;
     }
 
-    public int getValueOfHand(){
-        return valueOfHand;
-    }
 
-    public static void main(String[] args) {
-
-    }
 }
