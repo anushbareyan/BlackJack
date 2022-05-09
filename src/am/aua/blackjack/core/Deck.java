@@ -7,7 +7,7 @@ import java.util.Random;
 public class Deck {
     public static final int NUMBER_OF_ALL_CARDS = 52;
     private final ArrayList<Card> cards;
-    private ArrayList<Card> usedCards;
+    private final ArrayList<Card> usedCards;
 
     public Deck() {
         cards = new ArrayList<>(52);
@@ -16,6 +16,7 @@ public class Deck {
                 cards.add(new Card(s, v));
             }
         }
+        usedCards = new ArrayList<>(0);
     }
 
     public static void main(String[] args) {
@@ -23,7 +24,6 @@ public class Deck {
         Card c = new Card(Card.Suit.HEART, Card.Value.ACE);
         d.removeUsedCard(c);
         System.out.println(c + "\n" + d);
-
     }
 
     public Card getRandomNotUsedCard() {
@@ -37,16 +37,16 @@ public class Deck {
         usedCards.add(c);
     }
 
-    public ArrayList<Card> getUsedCards() {
-        ArrayList<Card> usedCardsCopy = new ArrayList<Card>(usedCards.size());
-        for (int i = 0; i < usedCards.size(); i++) {
-            if (usedCards.get(i) == null) {
-                usedCardsCopy.set(i, null);
+    public ArrayList<Card> getCards() {
+        ArrayList<Card> cardsCopy = new ArrayList<Card>(cards.size());
+        for (int i = 0; i < cards.size(); i++) {
+            if (cards.get(i) == null) {
+                cardsCopy.set(i, null);
             } else {
-                usedCardsCopy.set(i, usedCards.get(i).clone());
+                cardsCopy.set(i, cards.get(i).clone());
             }
         }
-        return usedCardsCopy;
+        return cardsCopy;
     }
 
     @Override

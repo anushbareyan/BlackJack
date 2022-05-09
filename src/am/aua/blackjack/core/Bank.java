@@ -4,12 +4,42 @@ public class Bank {
     private Money bettedMoney;
 
     public Bank(){
-        balance = new Money("0");
+        balance = new Money("0.00");
+        bettedMoney =new Money("0.00");
+    }
+    public Bank(String stringAmount){//assigns only the balance, bettedMoney=0.00
+        balance = new Money(stringAmount);
+        bettedMoney =new Money("0.00");
+    }
+    public Bank(String balanceStr, String bettedMoneyStr){
+        balance = new Money(balanceStr);
+        bettedMoney =new Money(bettedMoneyStr);
+    }
+    public Bank(Bank bank){   //copy constructor
+        balance = new Money(bank.balance);
+        bettedMoney =new Money(bank.bettedMoney);
+    }
+
+    public void setBettedMoney(String amount){
+        bettedMoney = new Money(amount);
+    }
+    public void setBalance(String amount){
+        balance = new Money(amount);
+    }
+    public void addInBettedMoney(String amount){
+        bettedMoney.addIn(new Money(amount));
+    }
+    public void addInBalance(String amount){
+        balance.addIn(new Money(amount));
+    }
+    public String getBettedMoney(){
+        return bettedMoney.getAmount();
     }
 
     public String getBalance(){
         return balance.getAmount();
     }
+
     public long getMoneyDollars() {
         return balance.getDollars();
     }
@@ -17,14 +47,12 @@ public class Bank {
     public int getMoneyCents() {
         return balance.getCents();
     }
-
-    public String getBettedMoney(){
-        return bettedMoney.getAmount();
-    }
-
-
-    public void makePaying(String betAmount) throws InsufficientFundsException {
-        bettedMoney.addIn(new Money(betAmount));
+    public void makePayment(String betAmount) throws InsufficientFundsException {
+        if(new Money(betAmount).getDollars()< balance.getDollars()
+                ||(new Money(betAmount).getDollars()== balance.getDollars()
+                && new Money(betAmount).getCents()< balance.getCents())){
+            bettedMoney.addIn(new Money(betAmount));
+        }
         balance.takeOut(new Money(betAmount));
     }
 
@@ -33,9 +61,10 @@ public class Bank {
         balance.dollars = 0;
         balance.cents =0;
     }
+
     @Override
     public String toString() {
-        return "Bank: "+ balance+"$"+"\nBetted money:"+bettedMoney+"$";
+        return "Bank: "+ balance+"$"+"\nBetted money: "+bettedMoney+"$";
     }
 
     public class Money {
@@ -47,6 +76,12 @@ public class Bank {
             int length = stringAmount.length();
             dollars = Long.parseLong(stringAmount.substring(0, length - 3));
             cents = Integer.parseInt(stringAmount.substring(length - 2, length));
+        }
+
+        public Money(Money money){
+            abortOnNull(money);
+            dollars = money.dollars;
+            cents =money.cents;
         }
 
         public long getDollars() {
@@ -75,18 +110,29 @@ public class Bank {
             abortOnNull(secondAmount);
             if(secondAmount.dollars>dollars){
                 throw new InsufficientFundsException();
-            }
-            if(cents - secondAmount.cents>=0){
+            }else if(cents - secondAmount.cents>=0){
                 int newCents = (cents - secondAmount.cents)%100;
-                dollars = dollars+secondAmount.dollars;
+                dollars = dollars-secondAmount.dollars;
                 cents = newCents;
             }else{
                  int newCents= (secondAmount.cents-cents)%100;
-                dollars = dollars+secondAmount.dollars-1;
+                dollars = dollars-secondAmount.dollars-1;
                 cents = newCents;
             }
 
         }
+
+        @Override
+        public String toString() {
+            if(this.cents==0 && this.dollars==0){
+                return "0.00";
+            }
+            if (cents > 9)
+                return (dollars + "." + cents);
+            else
+                return (dollars + ".0" + cents);
+        }
+
         private void abortOnNull(Object o)
         {
             if (o == null)
@@ -95,6 +141,14 @@ public class Bank {
                 System.exit(0);
             }
         }
+    }
+    public static void main(String[] args) {
+        Bank  b= new Bank("100.02");
+        b.setBalance("50.01");
+        b.setBettedMoney("10.22");
+        Bank b2 = new Bank(b);
+        System.out.println(b);
+        System.out.println(b2);
     }
 
 }

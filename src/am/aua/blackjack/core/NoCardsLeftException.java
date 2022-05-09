@@ -2,7 +2,7 @@ package am.aua.blackjack.core;
 
 public class NoCardsLeftException extends Exception {
     public NoCardsLeftException() {
-        super("No cards left :(");
+        super("shuffling again");
     }
 
     public NoCardsLeftException(String message) {
