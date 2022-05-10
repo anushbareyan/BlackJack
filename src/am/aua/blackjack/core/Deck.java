@@ -10,10 +10,12 @@ public class Deck {
     private final ArrayList<Card> usedCards;
 
     public Deck() {
-        cards = new ArrayList<>(52);
-        for (Card.Suit s : Card.Suit.values()) {
-            for (Card.Value v : Card.Value.values()) {
-                cards.add(new Card(s, v));
+        cards = new ArrayList<>(312);
+        for(int i=0;i<6;i++){
+            for (Card.Suit s : Card.Suit.values()) {
+                for (Card.Value v : Card.Value.values()) {
+                    cards.add(new Card(s, v));
+                }
             }
         }
         usedCards = new ArrayList<>(0);
@@ -33,6 +35,9 @@ public class Deck {
     }
 
     public void removeUsedCard(Card c) {
+        if(cards.size()==0){
+            new Deck();
+        }
         cards.remove(c);
         usedCards.add(c);
     }

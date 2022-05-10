@@ -38,7 +38,9 @@ public class Card implements Cloneable{
         this.value = value;
         if (value.ordinal() < 9) {
             this.intValue = value.ordinal() + 2;
-        } else {
+        } else if(value==Value.ACE){
+            this.intValue =11;
+        }else {
             this.intValue = 10;
         }
     }
@@ -112,7 +114,6 @@ public class Card implements Cloneable{
     public static void main(String[] args) {
         Card c =new Card();
         System.out.println(c);
-
         Card d = c.clone();
         System.out.println(d);
     }

@@ -1,10 +1,9 @@
 package am.aua.blackjack.core;
 
-import java.util.Random;
 public class Player extends Participant implements Comparable<Player>{
     private Bank bank;
 
-    public Player(){//karogha arandzin createhand anel?
+    public Player(){
         super();
         setName("No name");
         bank = new Bank("1000.00");
@@ -23,11 +22,12 @@ public class Player extends Participant implements Comparable<Player>{
         super(deck);
     }
 
+
     public Bank getBank() {
         return new Bank(bank);
     }
 
-    public void makeBet(String amount) throws InsufficientFundsException {
+    public void makeBet(String amount) throws InsufficientFundsException, InvalidMoneyInputException, NoMoneyException {
         this.bank.makePayment(amount);
     }
 
@@ -44,29 +44,30 @@ public class Player extends Participant implements Comparable<Player>{
         bank.addInBalance(amount);
     }
 
+    public void addWinToBalance(){
+        addMoneyToBalance(bank.multiplyByWinCoefficient(bank.getBettedMoney()));
+    }
+
     @Override
     public int compareTo(Player o) { //comparing only their banks to see who is the leader
 
-        if(bank.getMoneyDollars()> o.bank.getMoneyDollars() && bank.getMoneyCents()>o.bank.getMoneyCents()){
-            return (int) (bank.getMoneyDollars()- o.bank.getMoneyDollars());
+        if(bank.getBalanceInDollars()> o.bank.getBalanceInDollars() && bank.getBalanceInCents()>o.bank.getBalanceInCents()){
+            return (int) (bank.getBalanceInDollars()- o.bank.getBalanceInDollars());
         }
-        if(bank.getMoneyCents()<o.bank.getMoneyCents() || bank.getMoneyDollars()<o.bank.getMoneyDollars()){
-            return (int) (o.bank.getMoneyDollars()-bank.getMoneyDollars());
+        if(bank.getBalanceInCents()<o.bank.getBalanceInCents() || bank.getBalanceInDollars()<o.bank.getBalanceInDollars()){
+            return (int) (o.bank.getBalanceInDollars()-bank.getBalanceInDollars());
         }
-        if(bank.getMoneyDollars()!= o.bank.getMoneyDollars()){
-            return (int) (bank.getMoneyDollars()- o.bank.getMoneyDollars());
+        if(bank.getBalanceInDollars()!= o.bank.getBalanceInDollars()){
+            return (int) (bank.getBalanceInDollars()- o.bank.getBalanceInDollars());
         }else{
-            if( bank.getMoneyCents()!=o.bank.getMoneyCents()){
-                return (bank.getMoneyCents()-o.bank.getMoneyCents())/100;
+            if( bank.getBalanceInCents()!=o.bank.getBalanceInCents()){
+                return (bank.getBalanceInCents()-o.bank.getBalanceInCents())/100;
             }else{
                 return 0;
             }
         }
     }
 
-    //public String toString(){
-        //return getName()+" has:\n"+bank+"\n"+getHand();
-    //}
     public String toStringWithBank(){
         return getName()+" has:\n"+bank+"\n"+getHand();
     }

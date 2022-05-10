@@ -9,19 +9,20 @@ public abstract class Participant implements Cloneable{
     }
     public Participant(Deck deck){
         hand =new Hand(deck);
-    }
+    }//creates random unused hand and removes it from deck
 
+    public void updateHandAfterRound(Deck d){
+        hand = new Hand(d);
+    }
     public void setName(String name){
         this.name =name;
     }
-
-
     public String getName(){
         return name;
     }
 
     public Hand getHand(){
-        return new Hand(hand.getCardsInHand(), hand.getValueOfCardsInHand());
+        return new Hand(hand.getCardsInHand());
     }
 
     //hit method returns what was given to the participant

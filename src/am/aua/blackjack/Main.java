@@ -1,10 +1,6 @@
 package am.aua.blackjack;
 
 import am.aua.blackjack.cli.BlackjackConsole;
-import am.aua.blackjack.core.Card;
-import am.aua.blackjack.core.NoCardsLeftException;
-
-import static am.aua.blackjack.core.Deck.*;
 
 public class Main {
     public static void main(String[] args) {

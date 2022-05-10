@@ -10,8 +10,6 @@ public class Dealer extends Participant{
         setName("Dealer");
     }
 
-
-
     public String toStringWhenHidden(){
         String str= getName()+" has:\n";
         str += "HIDDEN\n";

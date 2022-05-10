@@ -1,7 +1,6 @@
 package am.aua.blackjack.cli;
 
-import am.aua.blackjack.core.Blackjack;
-import am.aua.blackjack.core.InsufficientFundsException;
+import am.aua.blackjack.core.*;
 
 import java.util.Scanner;
 
@@ -23,13 +22,18 @@ public class BlackjackConsole {
                 play();
             }else if (inputLine.startsWith("p ")) {
                 int playerNumber = Integer.parseInt(inputLine.substring(2));
-                String[] names = new String[playerNumber];
-                System.out.println("enter your names separated by a linebreak only: ");
-                for(int i=0;i<playerNumber;i++){
-                    names[i] = sc.nextLine();
+                if(playerNumber>0 && playerNumber<8){
+                    String[] names = new String[playerNumber];
+                    System.out.println("enter your names separated by a linebreak only: ");
+                    for(int i=0;i<playerNumber;i++){
+                        names[i] = sc.nextLine();
+                    }
+                    game = new Blackjack(playerNumber, names);
+                    play();
+                }else{
+                    System.out.println("No more than 7 players are allowed to play :(");
                 }
-                game = new Blackjack(playerNumber, names);
-                play();
+
             } else {
                 System.out.println("Unknown instruction. Please try again.");
             }
@@ -41,9 +45,11 @@ public class BlackjackConsole {
 
     public void play(){
         Scanner sc = new Scanner(System.in);
-        String inputLine;
+        //String inputLine;
         while(!game.isGameOver()){
-            for(int i=0; i<game.getNumberOfPlayers();i++){
+                game.updateParticipantsHandAfterRound();
+
+            for(int i=0; i<game.getPlayers().length;i++){
                 System.out.println(game.getPlayers()[i].toStringOnlyBank());
                 System.out.println("Enter the amount of bet with the following format--> 100.00");
                 String StringAmount = sc.nextLine();
@@ -52,16 +58,21 @@ public class BlackjackConsole {
                     try {
                         game.indexPlayerMakeBet(StringAmount, i);
                         success =true;
-                    } catch (InsufficientFundsException e) {
+                    } catch (InsufficientFundsException | InvalidMoneyInputException e) {
                         System.out.println(e.getMessage());
                         System.out.println("Enter the amount of bet with the following format--> 100.00");
                         StringAmount = sc.nextLine();
+                    } catch (NoMoneyException e) {
+                        System.out.println(e.getMessage());
+                        game.removePlayerFromArray(i);
+                        i--;
+                        success=true;
                     }
 
                 }
             }
             boolean isDealerCardHidden = true;
-            for(int i=0; i<game.getNumberOfPlayers();i++) {
+            for(int i=0;i<game.getPlayers().length;i++) {
                 boolean success = false;
                 System.out.println(game.getPlayers()[i].toStringWithBank()+"\n");
                 if(!isDealerCardHidden){
@@ -75,18 +86,20 @@ public class BlackjackConsole {
                     if (instruction.equals("hit")) {
                         game.playerHit(i);
                         System.out.println(game.getPlayers()[i]+"\n");
-                        System.out.println(game.getDealer().toStringWhenHidden());
+                        System.out.println(game.getDealer().toStringWhenHidden()+"\n");
                         if(game.getPlayers()[i].getHand().getValueOfCardsInHand()>=21){
                             success =true;
                             continue;
                         }
                     }else if(instruction.equals("double")){
-                        game.playerHit(i);
+                            game.playerHit(i);
                         System.out.println(game.getPlayers()[i]+"\n");
-                        System.out.println(game.getDealer().toStringWhenHidden());
+                        System.out.println(game.getDealer().toStringWhenHidden()+"\n");
                         try {
                             game.indexPlayerMakeBet(game.getPlayers()[i].getBank().getBettedMoney(), i);
-                        } catch (InsufficientFundsException e) {
+                        } catch (InsufficientFundsException | InvalidMoneyInputException e) {
+                            System.out.println(e.getMessage());
+                        } catch (NoMoneyException e) {
                             System.out.println(e.getMessage());
                         }
                     }else if(instruction.equals("stand")){
@@ -102,48 +115,40 @@ public class BlackjackConsole {
 
             }
             while(game.getDealer().getHand().getValueOfCardsInHand()<17){
-                game.dealerHit();
+                    game.dealerHit();
+
             }
             System.out.println(game.getDealer()+"\n");
-            for(int j=0; j<game.getNumberOfPlayers();j++) {
+            for(int j=0; j<game.getPlayers().length;j++) {
                 int dealerValueOfHand =game.getDealer().getHand().getValueOfCardsInHand();
                 int playerValueOfHand =game.getPlayers()[j].getHand().getValueOfCardsInHand();
                 if(playerValueOfHand>21){
                     System.out.println("\n"+game.getPlayers()[j].getName()+" busted! ;("+"\n");
                     game.setBettedMoney(j,"0.00");
-                    System.out.println(game.getPlayers()[j].toStringOnlyBank());
                 }
                 else{
 
                     if(dealerValueOfHand>21){
                         System.out.println("\n"+game.getPlayers()[j].getName()+" Won! :)");
-                        game.payBack(j,game.getPlayers()[j].getBank().getBettedMoney());
-                        game.payBack(j,game.getPlayers()[j].getBank().getBettedMoney());
+                        game.payWinningToPlayer(j);
                         game.setBettedMoney(j,"0.00");
-//                        System.out.println(game.getPlayers()[j].toStringOnlyBank());
                     }else if(playerValueOfHand==dealerValueOfHand){
                         System.out.println("\n"+game.getPlayers()[j].getName()+" has a push! :|");
                         game.payBack(j,game.getPlayers()[j].getBank().getBettedMoney());
                         game.setBettedMoney(j,"0.00");
-//                        System.out.println(game.getPlayers()[j].toStringOnlyBank());
                     }else if(playerValueOfHand<dealerValueOfHand){
                         System.out.println("\n"+game.getPlayers()[j].getName()+" busted! ;("+"\n");
                         game.setBettedMoney(j,"0.00");
-//                        System.out.println(game.getPlayers()[j].toStringOnlyBank());
                     }else{
                         System.out.println("\n"+game.getPlayers()[j].getName()+" Won! :)");
                         game.payBack(j,game.getPlayers()[j].getBank().getBettedMoney());
-                        game.payBack(j,game.getPlayers()[j].getBank().getBettedMoney());
+                        game.payWinningToPlayer(j);
                         game.setBettedMoney(j,"0.00");
                     }
                 }
             }
         }
 
-    }
-
-    public void print(){
-        System.out.println( );
     }
 
     private void printInstructions() {

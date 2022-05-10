@@ -15,13 +15,8 @@ public class Hand {
     public Hand(Deck d){
         cardsInHand = new Card[]{createCardAndRemoveFromDeck(d), createCardAndRemoveFromDeck(d)};
         valueOfCardsInHand = cardsInHand[0].getIntValue() + cardsInHand[1].getIntValue();
-    }
 
-    public Hand(Card[] cardsInHand, int valueOfCardsInHand) {
-        setCardsInHand(cardsInHand);
-        this.valueOfCardsInHand = valueOfCardsInHand;
     }
-
     public Hand(Card[] cardsInHand) {
         setCardsInHand(cardsInHand);
         for (int i = 0; i < cardsInHand.length; i++) {
@@ -33,7 +28,6 @@ public class Hand {
         setCardsInHand(h.cardsInHand);
         this.valueOfCardsInHand = h.valueOfCardsInHand;
     }
-
 
     public Card[] getCardsInHand() {
         Card[] copy = new Card[cardsInHand.length];
@@ -58,7 +52,6 @@ public class Hand {
     }
 
     public void addCardsToCardsInHand(Card... newCards) {
-
         cardsInHand = Card.appendCardsToArray(cardsInHand, newCards);
         for (int i = 0; i < newCards.length; i++) {
             valueOfCardsInHand += newCards[i].getIntValue();
@@ -69,12 +62,11 @@ public class Hand {
     @Override
     public String toString() {
         String str = "";
-        int totalVal=0;
         for (Card c : cardsInHand) {
-            str = str + c + "\n";//TODO karogha with the value n petq chi
-            totalVal+=c.getIntValue();
+            str = str + c + "\n";
+            //totalVal+=c.getIntValue();
         }
-        return str+"Total Value: "+totalVal;
+        return str+"Total Value: "+valueOfCardsInHand;
     }
 
     public static void main(String[] args) {

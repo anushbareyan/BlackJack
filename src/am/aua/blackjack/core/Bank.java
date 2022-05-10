@@ -40,14 +40,30 @@ public class Bank {
         return balance.getAmount();
     }
 
-    public long getMoneyDollars() {
+    public String multiplyByWinCoefficient(String amount){
+        Money m = new Money(amount);
+
+         m.dollars = (long) (m.getDollars()*1.5);
+        m.cents = (int) (Math.round(m.getCents()*(float)1.5)+((m.getDollars()*3)%2)*10);
+        return m.toString();
+    }
+
+    public long getMoneyInDollars(String amount){
+        Money m =new Money(amount);
+        return m.getDollars();
+    }public long getMoneyInCents(String amount){
+        Money m =new Money(amount);
+        return m.getCents();
+    }
+
+    public long getBalanceInDollars() {
         return balance.getDollars();
     }
 
-    public int getMoneyCents() {
+    public int getBalanceInCents() {
         return balance.getCents();
     }
-    public void makePayment(String betAmount) throws InsufficientFundsException {
+    public void makePayment(String betAmount) throws InsufficientFundsException, InvalidMoneyInputException, NoMoneyException {
         if(new Money(betAmount).getDollars()< balance.getDollars()
                 ||(new Money(betAmount).getDollars()== balance.getDollars()
                 && new Money(betAmount).getCents()< balance.getCents())){
@@ -106,8 +122,14 @@ public class Bank {
             cents = newCents;
             dollars = dollars + secondAmount.dollars + carry;
         }
-        public void takeOut(Money secondAmount) throws InsufficientFundsException {
+        public void takeOut(Money secondAmount) throws InsufficientFundsException, InvalidMoneyInputException, NoMoneyException {
             abortOnNull(secondAmount);
+            if((secondAmount.dollars<=0 && secondAmount.cents<=0) ||(secondAmount.toString().charAt(0)=='-')){
+                throw new InvalidMoneyInputException();
+            }
+            if(dollars==0 &&cents==0){
+                throw new NoMoneyException();
+            }
             if(secondAmount.dollars>dollars){
                 throw new InsufficientFundsException();
             }else if(cents - secondAmount.cents>=0){

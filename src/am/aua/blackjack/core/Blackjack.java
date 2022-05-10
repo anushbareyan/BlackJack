@@ -3,7 +3,6 @@ package am.aua.blackjack.core;
 public class Blackjack {
     private static final int NUMBER_OF_DECKS = 6;
     public Deck deck;
-    private int numberOfChanges;
     private int numberOfPlayers;
     private Player[] players;
     private Dealer dealer;
@@ -47,8 +46,18 @@ public class Blackjack {
         return dealer.clone();
     }
 
-    public void indexPlayerMakeBet(String amount, int numberOfPlayer) throws InsufficientFundsException {
+    public void indexPlayerMakeBet(String amount, int numberOfPlayer) throws InsufficientFundsException, InvalidMoneyInputException, NoMoneyException {
         players[numberOfPlayer].makeBet(amount);
+    }
+    public void removePlayerFromArray(int index){
+        Player[] result =new Player[players.length-1];
+        for (int i = 0, k = 0; i <players.length; i++) {
+            if (i == index) {
+                continue;
+            }
+            result[k++] = players[i];
+        }
+        players =result;
     }
 
     public void playerHit(int numberOfPlayer){
@@ -65,10 +74,15 @@ public class Blackjack {
     public void payBack(int index, String amount){
         players[index].addMoneyToBalance(players[index].getBank().getBettedMoney());
     }
+    public void payWinningToPlayer(int index){
+        players[index].addWinToBalance();
+    }
 
-
-    public Player getTurn(){
-        return players[numberOfChanges% players.length];
+    public void updateParticipantsHandAfterRound(){
+        for(int i = 0; i<players.length;i++){
+            players[i].updateHandAfterRound(deck);
+        }
+        dealer.updateHandAfterRound(deck);
     }
     public boolean isGameOver(){
         return false;
