@@ -88,15 +88,13 @@ public class Card implements Cloneable{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Card card = (Card) o;
         return (intValue == ((Card) o).intValue && suit == ((Card) o).suit && value == ((Card) o).value);
     }
 
     @Override
     public Card clone() {
         try {
-            Card copy = (Card) super.clone();
-            return copy;
+            return (Card) super.clone();
         } catch (CloneNotSupportedException e) {
             // never reached
             return null;
