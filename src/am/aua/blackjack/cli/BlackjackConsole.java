@@ -2,6 +2,7 @@ package am.aua.blackjack.cli;
 
 import am.aua.blackjack.core.*;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class BlackjackConsole {
@@ -116,6 +117,15 @@ public class BlackjackConsole {
                         //isDealerCardHidden=false;
                     }
                     else if(instruction.equals("q")){
+                        Player[] p = game.getPlayers();
+                        Arrays.sort(p);
+                        for(int j=p.length-1; j>=0;j--) {
+                            if(j==p.length-1){
+                                System.out.println("Congratulations "+p[j].getName()+", you are the winner in terms of balance!!! :)"+"\n"+p[j].toStringOnlyBank());
+                            }else {
+                                System.out.println("Number " + (p.length-j) + " player is " + p[j].getName() + "\n" + p[j].toStringOnlyBank());
+                            }
+                        }
                         System.exit(0);
                     }else{
                         System.out.println("Unknown instruction. Please try again.");

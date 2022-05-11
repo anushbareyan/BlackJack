@@ -52,20 +52,30 @@ public class Player extends Participant implements Comparable<Player>{
     public int compareTo(Player o) { //comparing only their banks to see who is the leader
 
         if(bank.getBalanceInDollars()> o.bank.getBalanceInDollars() && bank.getBalanceInCents()>o.bank.getBalanceInCents()){
-            return (int) (bank.getBalanceInDollars()- o.bank.getBalanceInDollars());
+            //return (int) (bank.getBalanceInDollars()- o.bank.getBalanceInDollars());
+            return 1;
         }
-        if(bank.getBalanceInCents()<o.bank.getBalanceInCents() || bank.getBalanceInDollars()<o.bank.getBalanceInDollars()){
-            return (int) (o.bank.getBalanceInDollars()-bank.getBalanceInDollars());
+        else if(bank.getBalanceInCents()<o.bank.getBalanceInCents() && bank.getBalanceInDollars()<o.bank.getBalanceInDollars()){
+            //return (int) (o.bank.getBalanceInDollars()-bank.getBalanceInDollars());
+            return -1;
         }
-        if(bank.getBalanceInDollars()!= o.bank.getBalanceInDollars()){
-            return (int) (bank.getBalanceInDollars()- o.bank.getBalanceInDollars());
+        else if(bank.getBalanceInCents()<o.bank.getBalanceInCents() && bank.getBalanceInDollars()> o.bank.getBalanceInDollars()){
+            return 1;
+        }
+        else if(bank.getBalanceInCents()>o.bank.getBalanceInCents() && bank.getBalanceInDollars()< o.bank.getBalanceInDollars()){
+            return -1;
         }else{
-            if( bank.getBalanceInCents()!=o.bank.getBalanceInCents()){
-                return (bank.getBalanceInCents()-o.bank.getBalanceInCents())/100;
-            }else{
-                return 0;
-            }
+            return 0;
         }
+//        if(bank.getBalanceInDollars()!= o.bank.getBalanceInDollars()){
+//            return (int) (bank.getBalanceInDollars()- o.bank.getBalanceInDollars());
+//        }else{
+//            if( bank.getBalanceInCents()!=o.bank.getBalanceInCents()){
+//                return (bank.getBalanceInCents()-o.bank.getBalanceInCents())/100;
+//            }else{
+//                return 0;
+//            }
+//        }
     }
 
     public String toStringWithBank(){
