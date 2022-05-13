@@ -40,10 +40,7 @@ public class BlackjackUI extends JFrame {
                 enter1.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        //name = text.getText();
-                        //JLabel hello = new JLabel("Hello " + text + "!!! Welcome to your Blackjack game :)");
-                        //add(hello);
-
+                        Blackjack game =new Blackjack(1, text.getText());
                         JLabel betMoney = new JLabel("You have $1000. How much money do you bet?" );
                         JTextField bet = new JTextField(10);
                         add(betMoney);
@@ -88,7 +85,7 @@ public class BlackjackUI extends JFrame {
 
     }
 
-    public static void main (String[] args){
+    public static void main (String[] args){//Not in main because UI incomplete
         BlackjackUI blackjackUI = new BlackjackUI();
         blackjackUI.setVisible( true );
     }
