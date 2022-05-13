@@ -108,11 +108,4 @@ public class Card implements Cloneable{
     public enum Value {
         TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE
     }
-
-    public static void main(String[] args) {
-        Card c =new Card();
-        System.out.println(c);
-        Card d = c.clone();
-        System.out.println(d);
-    }
 }

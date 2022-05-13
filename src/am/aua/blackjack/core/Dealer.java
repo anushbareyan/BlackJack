@@ -24,8 +24,4 @@ public class Dealer extends Participant{
         return (Dealer) super.clone();
     }
 
-    public static void main(String[] args) {
-        Dealer d = new Dealer();
-        System.out.println(d);
-    }
 }

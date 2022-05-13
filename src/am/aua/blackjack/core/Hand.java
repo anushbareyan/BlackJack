@@ -68,15 +68,4 @@ public class Hand {
         }
         return str+"Total Value: "+valueOfCardsInHand;
     }
-
-    public static void main(String[] args) {
-        Hand h = new Hand();
-        System.out.println(h);
-        for (int i = 0; i < 2; i++) {
-            System.out.println(h.getCardsInHand()[i]);
-        }
-
-    }
-
-
 }

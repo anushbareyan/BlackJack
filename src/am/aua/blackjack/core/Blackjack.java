@@ -46,8 +46,8 @@ public class Blackjack {
         return dealer.clone();
     }
 
-    public void indexPlayerMakeBet(String amount, int numberOfPlayer) throws InsufficientFundsException, InvalidMoneyInputException, NoMoneyException {
-        players[numberOfPlayer].makeBet(amount);
+    public void indexPlayerMakeBet(String amount, int indexOfPlayer) throws InsufficientFundsException, InvalidMoneyInputException, NoMoneyException {
+        players[indexOfPlayer].makeBet(amount);
     }
     public void removePlayerFromArray(int index){
         Player[] result =new Player[players.length-1];
@@ -60,15 +60,15 @@ public class Blackjack {
         players =result;
     }
 
-    public void playerHit(int numberOfPlayer){
-        players[numberOfPlayer].hit(deck);
+    public void playerHit(int indexOfPlayer){
+        players[indexOfPlayer].hit(deck);
     }
     public void dealerHit(){
         dealer.hit(deck);
     }
 
-    public void setBettedMoney(int index, String amount){
-        players[index].setBettedMoney(amount);
+    public void setBettedMoney(int indexOfPlayer, String amount){
+        players[indexOfPlayer].setBettedMoney(amount);
     }
 
     public void payBack(int index, String amount){

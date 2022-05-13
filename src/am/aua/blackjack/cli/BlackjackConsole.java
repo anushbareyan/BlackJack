@@ -47,8 +47,7 @@ public class BlackjackConsole {
     public void play(){
         Scanner sc = new Scanner(System.in);
         //String inputLine;
-        boolean gameOver =false;
-        while(!gameOver){
+        while(!game.isGameOver()){
             game.updateParticipantsHandAfterRound();
 
             for(int i=0; i<game.getPlayers().length;i++){

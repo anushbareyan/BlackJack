@@ -164,13 +164,4 @@ public class Bank {
             }
         }
     }
-    public static void main(String[] args) {
-        Bank  b= new Bank("100.02");
-        b.setBalance("50.01");
-        b.setBettedMoney("10.22");
-        Bank b2 = new Bank(b);
-        System.out.println(b);
-        System.out.println(b2);
-    }
-
 }

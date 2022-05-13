@@ -21,13 +21,6 @@ public class Deck {
         usedCards = new ArrayList<>(0);
     }
 
-    public static void main(String[] args) {
-        Deck d = new Deck();
-        Card c = new Card(Card.Suit.HEART, Card.Value.ACE);
-        d.removeUsedCard(c);
-        System.out.println(c + "\n" + d);
-    }
-
     public Card getRandomNotUsedCard() {
         Random rand = new Random();
         int randomForCards = rand.nextInt(cards.size());

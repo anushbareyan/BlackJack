@@ -34,12 +34,6 @@ public class Player extends Participant implements Comparable<Player>{
     public void setBettedMoney(String amount){
         bank.setBettedMoney(amount);
     }
-    public void setBalance(String amount){
-        bank.setBalance(amount);
-    }
-    public void addMoneyToBettedMoney(String amount){
-        bank.addInBettedMoney(amount);
-    }
     public void addMoneyToBalance(String amount){
         bank.addInBalance(amount);
     }
@@ -50,32 +44,19 @@ public class Player extends Participant implements Comparable<Player>{
 
     @Override
     public int compareTo(Player o) { //comparing only their banks to see who is the leader
-
-        if(bank.getBalanceInDollars()> o.bank.getBalanceInDollars() && bank.getBalanceInCents()>o.bank.getBalanceInCents()){
-            //return (int) (bank.getBalanceInDollars()- o.bank.getBalanceInDollars());
+        if(bank.getBalanceInDollars()> o.bank.getBalanceInDollars()){
             return 1;
-        }
-        else if(bank.getBalanceInCents()<o.bank.getBalanceInCents() && bank.getBalanceInDollars()<o.bank.getBalanceInDollars()){
-            //return (int) (o.bank.getBalanceInDollars()-bank.getBalanceInDollars());
-            return -1;
-        }
-        else if(bank.getBalanceInCents()<o.bank.getBalanceInCents() && bank.getBalanceInDollars()> o.bank.getBalanceInDollars()){
-            return 1;
-        }
-        else if(bank.getBalanceInCents()>o.bank.getBalanceInCents() && bank.getBalanceInDollars()< o.bank.getBalanceInDollars()){
+        }else if(bank.getBalanceInDollars() < o.bank.getBalanceInDollars()){
             return -1;
         }else{
-            return 0;
+            if(bank.getBalanceInCents()>o.bank.getBalanceInCents()){
+                return 1;
+            }else if(bank.getBalanceInCents()<o.bank.getBalanceInCents()){
+                return -1;
+            }else{
+                return 0;
+            }
         }
-//        if(bank.getBalanceInDollars()!= o.bank.getBalanceInDollars()){
-//            return (int) (bank.getBalanceInDollars()- o.bank.getBalanceInDollars());
-//        }else{
-//            if( bank.getBalanceInCents()!=o.bank.getBalanceInCents()){
-//                return (bank.getBalanceInCents()-o.bank.getBalanceInCents())/100;
-//            }else{
-//                return 0;
-//            }
-//        }
     }
 
     public String toStringWithBank(){
@@ -89,13 +70,5 @@ public class Player extends Participant implements Comparable<Player>{
         copy.setName(getName());
         copy.bank = new Bank(bank);
         return copy;
-    }
-
-    public static void main(String[] args) {
-        Deck d = new Deck();
-        Player p = new Player();
-        p.hit(d);
-        p.hit(d);
-        System.out.println(p);
     }
 }
